@@ -12,7 +12,7 @@ const LandingPage = () => {
         <nav className="header__nav">
           <a href="#home">Home</a>
           <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="#contact">Contact us</a>
           <div className="header__auth">
             <button className="header__button">Sign Up</button>
             <button className="header__button header__button--signin">Sign In</button>
