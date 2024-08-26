@@ -1,31 +1,17 @@
-// src/components/LandingPage.js
-
 import React from 'react';
+import Header from './Header';
+import Footer from './Footer';
 import './LandingPage.css';
 
 const LandingPage = () => {
   return (
     <div className="landing-page">
-      {/* Header */}
-      <header className="header">
-        <div className="header__logo">Streamify</div>
-        <nav className="header__nav">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact us</a>
-          <div className="header__auth">
-            <button className="header__button">Sign Up</button>
-            <button className="header__button header__button--signin">Sign In</button>
-          </div>
-        </nav>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="hero">
         <div className="hero__content">
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          <h1>Welcome to Streamify</h1>
-          <p>Watch your favorite shows and movies anytime, anywhere.</p>
+          <br/><br/><br/><br/><br/><br/><br/><br/><br/>
           <button className="hero__button">Start Watching</button>
         </div>
       </section>
@@ -56,24 +42,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer__top">
-          <div className="footer__links">
-            <a href="#terms">Terms of Service</a>
-            <a href="#privacy">Privacy Policy</a>
-            <a href="#help">Help</a>
-          </div>
-          <div className="footer__social">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-          </div>
-        </div>
-        <div className="footer__bottom">
-          <p>&copy; 2024 Streamify. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

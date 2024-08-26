@@ -1,0 +1,120 @@
+/* src/components/AdminDashboard.css */
+
+.dashboard {
+    display: flex;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-color: #000;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .sidemenu {
+    width: 240px;
+    background-color: #111;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .sidemenu__logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .sidemenu__nav {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidemenu__link {
+    color: #fff;
+    margin-bottom: 15px;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
+  
+  .sidemenu__link:hover {
+    background-color: #333;
+  }
+  
+  .dashboard__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #181818;
+  }
+  
+  .dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+  }
+  
+  .dashboard__header h1 {
+    font-size: 32px;
+  }
+  
+  .dashboard__actions {
+    display: flex;
+  }
+  
+  .dashboard__button {
+    background-color: #e50914;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+  }
+  
+  .dashboard__button:hover {
+    background-color: #f40612;
+  }
+  
+  .dashboard__main {
+    flex: 1;
+    margin-top: 20px;
+    overflow-y: auto;
+  }
+  
+  .content__section {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .content__section h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    border-bottom: 2px solid #e50914;
+    padding-bottom: 10px;
+  }
+  
+  .content__section p {
+    font-size: 16px;
+  }
+  .sidemenu__link {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    margin-bottom: 15px;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
+  
+  .sidemenu__icon {
+    margin-right: 10px; /* Space between icon and text */
+  }
+  
