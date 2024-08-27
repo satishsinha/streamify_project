@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LandingPage from './components/Landing/LandingPage';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import Dashboard from './components/User/Dashboard';
+import CallBack from './components/utils/CallBack';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/user" element={<Dashboard />} />
+          <Route path="/register" element={<CallBack />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
