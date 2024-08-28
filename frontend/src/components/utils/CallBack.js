@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from 'react-router-dom';
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
+
 
 const CallBack = () => {
     const location = useLocation();
@@ -20,8 +21,8 @@ const CallBack = () => {
             const txn_error = params.get('error');
             const app_key = process.env.REACT_APP_ONEACCESS_CLIENT_ID;
             const app_secret = process.env.REACT_APP_ONEACCESS_CLIENT_SECRET;
-
-            if (txn_error === 0 && token !== 0) {
+           
+            if (txn_error === '0' && token) {
                 const fetch_user_data = async () => {
                     try {
                         const response = await fetch(`${process.env.REACT_APP_ONEACCESS_BACKEND_URL}/validate_token`, {
@@ -32,13 +33,19 @@ const CallBack = () => {
                             },
                             body: JSON.stringify({ app_key, app_secret, token })
                         });
-    
+                        
                         const data = await response.json();
-    
-                        if (data.status_code === 200) {
+                       
+                        if (response.ok && data.success) {
                             const jwt_token = data.jwt_token;
-                            const decoded = jwt_decode(jwt_token);
-                            setUser(decoded);
+                            // Decode the JWT token
+                            try {
+                                const decodedToken = jwtDecode(jwt_token);
+                                setUser(decodedToken); // Set the decoded token as user state
+                            } catch (decodeError) {
+                                console.error("Failed to decode JWT token:", decodeError);
+                                setError("Failed to decode JWT token");
+                            }
                         } else {
                             setError("Unexpected response format");
                             console.error('Failed to fetch service data:', data);
@@ -62,7 +69,7 @@ const CallBack = () => {
         <div>
             <div>CallBack</div>
             {error && <div>Error : {error}</div>}
-            {user && <div>User Record : {user}</div>}
+            {user && <div>User Record : {JSON.stringify(user)}</div>}
         </div>
     );
 };
