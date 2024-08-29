@@ -1,13 +1,12 @@
 // src/components/utils/CallBack.js
 
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const CallBack = () => {
     const location = useLocation();
-    const [user, setUser] = useState([]);
+    const navigate = useNavigate(); 
     const [error, setError] = useState(null);
     const fetchTriggeredRef = useRef(false);  // Use ref to track if the fetch has been triggered
 
@@ -23,7 +22,7 @@ const CallBack = () => {
             const app_secret = process.env.REACT_APP_ONEACCESS_CLIENT_SECRET;
            
             if (txn_error === '0' && token) {
-                const fetch_user_data = async () => {
+                const validateToken = async () => {
                     try {
                         const response = await fetch(`${process.env.REACT_APP_ONEACCESS_BACKEND_URL}/validate_token`, {
                             method: 'POST',
@@ -38,14 +37,36 @@ const CallBack = () => {
                        
                         if (response.ok && data.success) {
                             const jwt_token = data.jwt_token;
-                            // Decode the JWT token
-                            try {
-                                const decodedToken = jwtDecode(jwt_token);
-                                setUser(decodedToken); // Set the decoded token as user state
-                            } catch (decodeError) {
-                                console.error("Failed to decode JWT token:", decodeError);
-                                setError("Failed to decode JWT token");
-                            }
+                            // Second API call to decode the token and check in the database
+                            const fetchDecodedUserData = async (jwt_token) => {
+                                try {
+                                    const response = await fetch(`${process.env.REACT_APP_STREAMIFY_BACKEND_URL}/validate_token`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ token: jwt_token })
+                                    });
+
+                                    const decodedData = await response.json();
+                                    
+                                    if (response.ok && decodedData.success) {
+                                        // Save data to session storage
+                                        sessionStorage.setItem('user', JSON.stringify(decodedData.data));
+                                        console.log("decodedddddd data:", decodedData)
+                                        // Redirect to Dashboard.js inside User folder
+                                        navigate('/user');
+                                    } else {
+                                        setError("Failed to fetch user data");
+                                        console.error('Failed to fetch user data:', decodedData);
+                                    }
+                                } catch (fetchError) {
+                                    setError("Error fetching user data");
+                                    console.error("Error fetching user data!", fetchError);
+                                }
+                            };
+                            fetchDecodedUserData(jwt_token);
                         } else {
                             setError("Unexpected response format");
                             console.error('Failed to fetch service data:', data);
@@ -58,7 +79,7 @@ const CallBack = () => {
                     }
                 };
     
-                fetch_user_data();
+                validateToken();
             } else {
                 setError('Transaction failed!');
             }
@@ -69,7 +90,6 @@ const CallBack = () => {
         <div>
             <div>CallBack</div>
             {error && <div>Error : {error}</div>}
-            {user && <div>User Record : {JSON.stringify(user)}</div>}
         </div>
     );
 };
