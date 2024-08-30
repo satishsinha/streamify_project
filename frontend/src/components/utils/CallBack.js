@@ -21,7 +21,7 @@ const CallBack = () => {
             const txn_error = params.get('error');
             const app_key = process.env.REACT_APP_ONEACCESS_CLIENT_ID;
             const app_secret = process.env.REACT_APP_ONEACCESS_CLIENT_SECRET;
-           
+            
             if (txn_error === '0' && token) {
                 const fetch_user_data = async () => {
                     try {
@@ -35,7 +35,7 @@ const CallBack = () => {
                         });
                         
                         const data = await response.json();
-                       
+                        
                         if (response.ok && data.success) {
                             const jwt_token = data.jwt_token;
                             // Decode the JWT token

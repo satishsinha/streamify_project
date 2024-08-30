@@ -46,9 +46,16 @@ const generateCustomId = () => {
   const handleButtonSignin = () => {
     const generatedId = generateCustomId();
     const signinButton = `${process.env.REACT_APP_ONEACCESS_HOST_URL}/cl_gsi?client_id=${process.env.REACT_APP_ONEACCESS_CLIENT_ID}&channel_transaction=${generatedId}&origin=${process.env.REACT_APP_HOST_URL}`;
-    
     // Navigate to the generated URL
     window.location.href = signinButton;
+  };
+
+  // Signup button configuration
+  const handleButtonSignup = () => {
+    const generatedId = generateCustomId();
+    const signupButton = `${process.env.REACT_APP_ONEACCESS_HOST_URL}/cr_gsi?client_id=${process.env.REACT_APP_ONEACCESS_CLIENT_ID}&channel_transaction=${generatedId}&origin=${process.env.REACT_APP_HOST_URL}`;
+    // Navigate to the generated URL
+    window.location.href = signupButton;
   };
 
   return (
@@ -62,7 +69,7 @@ const generateCustomId = () => {
         <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
         <a href="#contact" onClick={() => setMenuOpen(false)}>Contact us</a>
         <div className="header__auth">
-          <button className="header__button">Sign Up</button>
+          <button className="header__button" onClick={handleButtonSignup}>Sign Up</button>
           <button className="header__button header__button--signin" onClick={handleButtonSignin}>Sign In</button>
         </div>
       </nav>
