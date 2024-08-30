@@ -24,7 +24,7 @@ const CallBack = () => {
             if (txn_error === '0' && token) {
                 const validateToken = async () => {
                     try {
-                        const response = await fetch(`${process.env.REACT_APP_ONEACCESS_BACKEND_URL}/validate_token`, {
+                        const response = await fetch(`${process.env.REACT_APP_STREAMIFY_BACKEND_URL}/verify_token`, {
                             method: 'POST',
                             headers: {
                                 'accept': 'application/json',
@@ -40,7 +40,7 @@ const CallBack = () => {
                             // Second API call to decode the token and check in the database
                             const fetchDecodedUserData = async (jwt_token) => {
                                 try {
-                                    const response = await fetch(`${process.env.REACT_APP_STREAMIFY_BACKEND_URL}/validate_token`, {
+                                    const response = await fetch(`${process.env.REACT_APP_STREAMIFY_BACKEND_URL}/call_back`, {
                                         method: 'POST',
                                         headers: {
                                             'accept': 'application/json',
@@ -54,9 +54,16 @@ const CallBack = () => {
                                     if (response.ok && decodedData.success) {
                                         // Save data to session storage
                                         sessionStorage.setItem('user', JSON.stringify(decodedData.data));
-                                        console.log("decodedddddd data:", decodedData)
-                                        // Redirect to Dashboard.js inside User folder
-                                        navigate('/user');
+                                        
+                                        // Redirect based on user role
+                                        const userRole = decodedData.data.user_role;
+                                        if (userRole === 'CL-ADMIN') {
+                                            navigate('/admin'); // Redirect to admin
+                                        } else if (userRole === 'CL-USER') {
+                                            navigate('/user'); // Redirect to user
+                                        } else {
+                                            setError("Unknown user role");
+                                        }
                                     } else {
                                         setError("Failed to fetch user data");
                                         console.error('Failed to fetch user data:', decodedData);
