@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.callback import router as callback_router
+from app.verify_token import router as verify_router
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -22,3 +23,6 @@ def read_root():
 
 # Include the callback router
 app.include_router(callback_router)
+
+# Include the callback router
+app.include_router(verify_router)
