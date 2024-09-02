@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
+import { useAuth } from '../../authContext';
 import SideMenu from './SideMenu';
 import Header from './Header';
 
 const Dashboard = () => {
-  
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) {
+      window.location.href = "/";
+    }else {
+      // User is authenticated, perform necessary actions
+      setIsLoading(false);
+  }
+  }, [user]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+}
+
 
   return (
     <div className="dashboard">

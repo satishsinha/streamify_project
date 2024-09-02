@@ -1,23 +1,24 @@
 // src/components/User/Header.js
-
 import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
+import { getUserSession } from '../utils/authUtils'; // Import the function
 
 const Header = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userData = sessionStorage.getItem('user');
+    const userData = getUserSession(); // Use the function to get user session
     if (userData) {
-      setUser(JSON.parse(userData));
+      setUser(userData);
     }
-    setLoading(false); // Set loading to false after fetching user data
+    setLoading(false);
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading indicator
+    return <div>Loading...</div>;
   }
+
   return (
     <header className="dashboard__header">
       <h1>Welcome, {user ? user.given_name : "User"} </h1>
