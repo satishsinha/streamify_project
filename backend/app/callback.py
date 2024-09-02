@@ -4,6 +4,7 @@ import pytz
 from datetime import datetime
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from app.utils import generate_txn_number
 from fastapi import APIRouter, HTTPException, status, Depends
 from jwt import ExpiredSignatureError, InvalidTokenError
 from app.database import get_mongo_client, MONGO_DB, USER_COLLECTION
@@ -66,6 +67,8 @@ async def call_back(token_request: TokenRequest, mongo_client=Depends(get_mongo_
         auth_mode = payload.get('auth_mode')
         user_role = payload.get('user_role')
 
+        txn = generate_txn_number()
+
         # Check if user with this email exists in the user collection
         user = user_collection.find_one({"email": email})
 
@@ -91,6 +94,7 @@ async def call_back(token_request: TokenRequest, mongo_client=Depends(get_mongo_
                 "email": email,
                 "birthdate": birthdate,
                 "user_role": user_role,
+                "txn": txn,
                 "auth_mode": auth_mode
             }
         }
