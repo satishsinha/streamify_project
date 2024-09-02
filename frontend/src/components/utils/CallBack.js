@@ -20,8 +20,9 @@ const CallBack = () => {
             const txn_error = params.get('error');
             const app_key = process.env.REACT_APP_ONEACCESS_CLIENT_ID;
             const app_secret = process.env.REACT_APP_ONEACCESS_CLIENT_SECRET;
-           
+            
             if (txn_error === '0' && token) {
+                
                 const validateToken = async () => {
                     try {
                         const response = await fetch(`${process.env.REACT_APP_STREAMIFY_BACKEND_URL}/verify_token`, {
@@ -57,9 +58,9 @@ const CallBack = () => {
                                         
                                         // Redirect based on user role
                                         const userRole = decodedData.data.user_role;
-                                        if (userRole === 'CL-ADMIN') {
+                                        if (userRole== 'CL-ADMIN') {
                                             navigate('/admin'); // Redirect to admin
-                                        } else if (userRole === 'CL-USER') {
+                                        } else if (userRole== 'CL-USER') {
                                             navigate('/user'); // Redirect to user
                                         } else {
                                             setError("Unknown user role");
