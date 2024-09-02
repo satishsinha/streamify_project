@@ -60,21 +60,21 @@ async def call_back(token_request: TokenRequest, mongo_client=Depends(get_mongo_
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
-        # Extract user details from the decoded token
         given_name = payload.get('given_name')
         email = payload.get('email')
         birthdate = payload.get('birthdate')
         auth_mode = payload.get('auth_mode')
         user_role = payload.get('user_role')
-        # Check if user with this email exists in the database
+
+        # Check if user with this email exists in the user collection
         user = user_collection.find_one({"email": email})
 
         if not user:
-            # User does not exist, insert new user data
             new_user = {
                 "given_name": given_name,
                 "email": email,
                 "birthdate": birthdate,
+                "user_role": user_role,
                 "auth_mode": auth_mode
             }
             user_collection.insert_one(new_user)
@@ -82,7 +82,6 @@ async def call_back(token_request: TokenRequest, mongo_client=Depends(get_mongo_
         else:
             print("User already exists in the database.")
 
-            # Return user data (either newly inserted or existing)
         return {
             "success": True,
             "status_code": 200,
@@ -91,6 +90,7 @@ async def call_back(token_request: TokenRequest, mongo_client=Depends(get_mongo_
                 "given_name": given_name,
                 "email": email,
                 "birthdate": birthdate,
+                "user_role": user_role,
                 "auth_mode": auth_mode
             }
         }
