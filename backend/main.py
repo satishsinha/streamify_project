@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.callback import router as callback_router
 from app.verify_token import router as verify_router
+from app.utils import router as utils_router
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -26,3 +27,6 @@ app.include_router(callback_router)
 
 # Include the callback router
 app.include_router(verify_router)
+
+# Include the utils router
+app.include_router(utils_router)

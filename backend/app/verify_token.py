@@ -1,9 +1,8 @@
 import os
 import httpx
-from fastapi import FastAPI, HTTPException, APIRouter
-from pydantic import BaseModel
 from dotenv import load_dotenv
-
+from fastapi import HTTPException, APIRouter
+from pydantic import BaseModel
 
 load_dotenv()
 
