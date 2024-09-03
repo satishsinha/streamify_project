@@ -1,31 +1,20 @@
-// src/components/Admin/Upload.js
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Upload.css';  
-import SideMenu from './SideMenu'; 
-import Header from './Header'; 
-import { getUserSession } from '../utils/authUtils'; 
+import Modal from 'react-modal';
+import './Upload.css';
+import SideMenu from './SideMenu';
+import Header from './Header';
+
+// Set up the modal root element
+Modal.setAppElement('#root');
 
 const Upload = () => {
-  const navigate = useNavigate(); 
-  const [userName, setUserName] = useState('');
+  const navigate = useNavigate();
   const [folderName, setFolderName] = useState('');
   const [bannerFile, setBannerFile] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
-
-  useEffect(() => {
-    const userSession = getUserSession(); // Get user session
-
-    if (userSession && userSession.given_name) {
-        setUserName(userSession.given_name);
-    } else {
-        // Redirect to login if no session
-        console.warn("No valid session found, redirecting to login.");
-        window.location.href = "/";
-    }
-  }, []);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleUpload = async (event) => {
     event.preventDefault();
@@ -48,23 +37,33 @@ const Upload = () => {
       }
 
       const result = await response.json();
-      //console.log("response:", result)
       setUploadStatus(`Upload Successful: ${JSON.stringify(result)}`);
-      // Redirect to AdminDashboard on successful upload
-      navigate('/admin');
+
+      // Open the modal on successful upload
+      setModalIsOpen(true);
     } catch (error) {
       console.error('Error uploading files:', error);
       setUploadStatus(`Error: ${error.message}`);
+
+      // Open the modal to show error message
+      setModalIsOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    if (uploadStatus.startsWith('Upload Successful')) {
+      navigate('/admin');
     }
   };
 
   return (
     <div className="dashboard">
-      <SideMenu /> {/* Include SideMenu component */}
+      <SideMenu />
       <div className="dashboard__content">
-        <Header /> {/* Include Header component */}
+        <Header />
         <div className="upload-container">
-          <h2>Upload Video</h2>
+          <h2>Upload Video Page</h2>
           <form className="upload-form" onSubmit={handleUpload}>
             <label htmlFor="folderName">Folder Name:</label>
             <input
@@ -92,8 +91,19 @@ const Upload = () => {
             />
             <button type="submit">Upload</button>
           </form>
-          {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
         </div>
+        {/* Modal for showing status message */}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Upload Status"
+          className="modal"
+          overlayClassName="modal-overlay"
+        >
+          <h2>{uploadStatus.startsWith('Error') ? 'Upload Failed!' : 'Upload Successful!'}</h2>
+          <p>{uploadStatus}</p>
+          <button onClick={closeModal} className="modal-button">OK</button>
+        </Modal>
       </div>
     </div>
   );
