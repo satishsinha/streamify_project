@@ -1,11 +1,26 @@
 // src/components/Dashboard.js
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
 import SideMenu from './SideMenu';
 import Header from './Header';
+import { getUserSession } from '../utils/authUtils'; // Import session handling function
 
 const AdminDashboard = () => {
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const userSession = getUserSession(); // Get user session
+
+    if (userSession && userSession.given_name) {
+        setUserName(userSession.given_name);
+    } else {
+        // Redirect to login if no session
+        console.warn("No valid session found, redirecting to login.");
+        window.location.href = "/";
+    }
+  }, []);
+
   return (
     <div className="dashboard">
       <SideMenu />
@@ -14,7 +29,6 @@ const AdminDashboard = () => {
         <Header />
 
         <section className="dashboard__main">
-          {/* Replace the content below with your actual content */}
           <div className="content__section">
             <h2>Statistics</h2>
             <p>Track your viewership, engagement, and more.</p>

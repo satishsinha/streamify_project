@@ -6,10 +6,11 @@ import LandingPage from './components/Landing/LandingPage';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import Dashboard from './components/User/Dashboard';
 import CallBack from './components/utils/CallBack';
+import { getUserSession } from './components/utils/authUtils';
 
 const ProtectedRoute = ({ element: Element, ...rest }) => {
-  const { user } = useAuth();
-  return user ? <Element {...rest} /> : <Navigate to="/" replace />;
+  const userSession = getUserSession();
+  return userSession ? <Element {...rest} /> : <Navigate to="/" replace />;
 };
 
 function App() {

@@ -1,19 +1,17 @@
-// src/utils/authUtils.js
-
 // Function to get user session from sessionStorage (or localStorage)
 export const getUserSession = () => {
-    const userSession = sessionStorage.getItem('user'); // Use sessionStorage or localStorage
-    return userSession ? JSON.parse(userSession) : null;
+    const userSession = sessionStorage.getItem('user');
+    return userSession ? JSON.parse(userSession) : null; // Ensure correct JSON parsing
 };
 
 // Function to save user session to sessionStorage (or localStorage)
 export const saveUserSession = (sessionData) => {
-    sessionStorage.setItem('user', JSON.stringify(sessionData)); // Use sessionStorage or localStorage
+    sessionStorage.setItem('user', JSON.stringify(sessionData));
 };
 
 // Function to remove user session from sessionStorage (or localStorage)
 export const removeUserSession = () => {
-    sessionStorage.removeItem('user'); // Use sessionStorage or localStorage
+    sessionStorage.removeItem('user');
 };
 
 // Logout function
@@ -29,10 +27,8 @@ export const handleLogout = () => {
         },
         body: JSON.stringify({ txn, email })
     })
-    
     .then((res) => res.json())
     .then((data) => {
-        //console.log("logout data:", data)
         if (data.success) {
             removeUserSession();
             window.location.href = "/";
