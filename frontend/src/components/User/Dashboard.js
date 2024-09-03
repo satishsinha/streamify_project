@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
-import { useAuth } from '../../authContext';
 import SideMenu from './SideMenu';
 import Header from './Header';
+import { getUserSession } from '../utils/authUtils'; // Import session handling function
 
 const Dashboard = () => {
-  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    if (!user) {
-      window.location.href = "/";
-    }else {
-      // User is authenticated, perform necessary actions
-      setIsLoading(false);
-  }
-  }, [user]);
+    const userSession = getUserSession(); // Get user session
+
+    if (userSession && userSession.given_name) {
+        // User is authenticated, perform necessary actions
+        setIsLoading(false);
+        setUserName(userSession.given_name);
+    } else {
+        // Redirect to login if no session
+        window.location.href = "/";
+    }
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
-}
+  }
 
 
   return (

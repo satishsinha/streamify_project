@@ -3,6 +3,7 @@
 import React from 'react';
 import './AdminDashboard.css';
 import { FaHome, FaFire, FaFilm, FaTv, FaList, FaSignOutAlt } from 'react-icons/fa';
+import { handleLogout } from '../utils/authUtils'; // Import the logout function
 
 const SideMenu = () => {
   return (
@@ -24,7 +25,7 @@ const SideMenu = () => {
         <a href="#mylist" className="sidemenu__link">
           <FaList className="sidemenu__icon" /> My List
         </a>
-        <a href="#logout" className="sidemenu__link">
+        <a href="#logout" className="sidemenu__link" onClick={handleLogout}>
           <FaSignOutAlt className="sidemenu__icon" /> Logout
         </a>
       </nav>
