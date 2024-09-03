@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './authContext'; // Import AuthProvider and useAuth
 import LandingPage from './components/Landing/LandingPage';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import Upload from './components/Admin/Upload';
 import Dashboard from './components/User/Dashboard';
 import CallBack from './components/utils/CallBack';
 import { getUserSession } from './components/utils/authUtils';
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/admin" element={<ProtectedRoute element={AdminDashboard} />} />
+            <Route path="/upload" element={<ProtectedRoute element={Upload} />} />
             <Route path="/user" element={<ProtectedRoute element={Dashboard} />} />
             <Route path="/register" element={<CallBack />} />
             <Route path="*" element={<Navigate to="/" replace />} />
