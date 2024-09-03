@@ -1,5 +1,3 @@
-// src/utils/authUtils.js
-
 // Function to get user session from sessionStorage (or localStorage)
 export const getUserSession = () => {
     const userSession = sessionStorage.getItem('user');
