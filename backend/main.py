@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from app.callback import router as callback_router
-from app.verify_token import router as verify_router
 from app.utils import router as utils_router
-from app.media_service import router as media_service_router
+from app.callback import router as callback_router
 from starlette.middleware.cors import CORSMiddleware
+from app.verify_token import router as verify_router
+from app.media_list import router as media_list_router
+from app.media_service import router as media_service_router
+
 
 app = FastAPI()
 
@@ -34,3 +36,6 @@ app.include_router(utils_router)
 
 # Include the media upload and transcode router
 app.include_router(media_service_router)
+
+# Include the media list router
+app.include_router(media_list_router)
