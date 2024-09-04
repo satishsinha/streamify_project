@@ -15,9 +15,11 @@ const Upload = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // State for loading
 
   const handleUpload = async (event) => {
     event.preventDefault();
+    setLoading(true); // Start loading
 
     const backendUrl = `${process.env.REACT_APP_STREAMIFY_BACKEND_URL}/upload_media`;
 
@@ -38,15 +40,13 @@ const Upload = () => {
 
       const result = await response.json();
       setUploadStatus(`Upload Successful: ${JSON.stringify(result)}`);
-
-      // Open the modal on successful upload
-      setModalIsOpen(true);
+      setModalIsOpen(true); // Open the modal on successful upload
     } catch (error) {
       console.error('Error uploading files:', error);
       setUploadStatus(`Error: ${error.message}`);
-
-      // Open the modal to show error message
-      setModalIsOpen(true);
+      setModalIsOpen(true); // Open the modal to show error message
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -64,33 +64,40 @@ const Upload = () => {
         <Header />
         <div className="upload-container">
           <h2>Upload Video Page</h2>
-          <form className="upload-form" onSubmit={handleUpload}>
-            <label htmlFor="folderName">Folder Name:</label>
-            <input
-              type="text"
-              id="folderName"
-              value={folderName}
-              onChange={(e) => setFolderName(e.target.value)}
-              required
-            />
-            <label htmlFor="bannerFile">Upload Banner:</label>
-            <input
-              type="file"
-              id="bannerFile"
-              accept="image/*"
-              onChange={(e) => setBannerFile(e.target.files[0])}
-              required
-            />
-            <label htmlFor="videoFile">Upload Video:</label>
-            <input
-              type="file"
-              id="videoFile"
-              accept="video/*"
-              onChange={(e) => setVideoFile(e.target.files[0])}
-              required
-            />
-            <button type="submit">Upload</button>
-          </form>
+          {loading ? (
+            <div className="loader">
+              <div className="loader-circle"></div>
+              <span>Loading...</span>
+            </div>
+          ) : (
+            <form className="upload-form" onSubmit={handleUpload}>
+              <label htmlFor="folderName">Folder Name:</label>
+              <input
+                type="text"
+                id="folderName"
+                value={folderName}
+                onChange={(e) => setFolderName(e.target.value)}
+                required
+              />
+              <label htmlFor="bannerFile">Upload Banner:</label>
+              <input
+                type="file"
+                id="bannerFile"
+                accept="image/*"
+                onChange={(e) => setBannerFile(e.target.files[0])}
+                required
+              />
+              <label htmlFor="videoFile">Upload Video:</label>
+              <input
+                type="file"
+                id="videoFile"
+                accept="video/*"
+                onChange={(e) => setVideoFile(e.target.files[0])}
+                required
+              />
+              <button type="submit">Upload</button>
+            </form>
+          )}
         </div>
         {/* Modal for showing status message */}
         <Modal

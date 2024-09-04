@@ -2,8 +2,10 @@
 
 import React from 'react';
 import './AdminDashboard.css';
-import { FaHome, FaFire, FaFilm, FaTv, FaList, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaFire, FaFilm, FaTv, FaList, FaSignOutAlt, FaCloudUploadAlt } from 'react-icons/fa';
 import { handleLogout } from '../utils/authUtils'; // Import the logout function
+import { Link } from 'react-router-dom'; 
+
 
 const SideMenu = () => {
   return (
@@ -25,6 +27,9 @@ const SideMenu = () => {
         <a href="#mylist" className="sidemenu__link">
           <FaList className="sidemenu__icon" /> My List
         </a>
+        <Link to="/media" className="sidemenu__link">
+          <FaCloudUploadAlt className="sidemenu__icon" /> Media List
+        </Link>
         <a href="#logout" className="sidemenu__link" onClick={handleLogout}>
           <FaSignOutAlt className="sidemenu__icon" /> Logout
         </a>
