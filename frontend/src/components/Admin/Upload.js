@@ -16,6 +16,7 @@ const Upload = () => {
   const [uploadStatus, setUploadStatus] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(false); // State for loading
+  const [redirectId, setRedirectId] = useState(''); // State to store ID for redirection
 
   const handleUpload = async (event) => {
     event.preventDefault();
@@ -39,8 +40,11 @@ const Upload = () => {
       }
 
       const result = await response.json();
+      const videoId = result.data.v_id;;
       setUploadStatus(`Upload Successful: ${JSON.stringify(result)}`);
       setModalIsOpen(true); // Open the modal on successful upload
+      // Store the ID for redirection
+      setRedirectId(videoId);
     } catch (error) {
       console.error('Error uploading files:', error);
       setUploadStatus(`Error: ${error.message}`);
@@ -53,7 +57,7 @@ const Upload = () => {
   const closeModal = () => {
     setModalIsOpen(false);
     if (uploadStatus.startsWith('Upload Successful')) {
-      navigate('/admin');
+      navigate(`/process?v=${redirectId}`);
     }
   };
 
@@ -95,7 +99,7 @@ const Upload = () => {
                 onChange={(e) => setVideoFile(e.target.files[0])}
                 required
               />
-              <button type="submit">Upload</button>
+              <button type="submit">Next</button>
             </form>
           )}
         </div>
@@ -108,7 +112,6 @@ const Upload = () => {
           overlayClassName="modal-overlay"
         >
           <h2>{uploadStatus.startsWith('Error') ? 'Upload Failed!' : 'Upload Successful!'}</h2>
-          <p>{uploadStatus}</p>
           <button onClick={closeModal} className="modal-button">OK</button>
         </Modal>
       </div>

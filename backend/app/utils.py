@@ -2,6 +2,8 @@ import uuid
 from pydantic import BaseModel, EmailStr
 from fastapi.responses import JSONResponse
 from fastapi import HTTPException, APIRouter
+import random
+import string
 
 
 router = APIRouter()
@@ -33,3 +35,10 @@ async def logout(request: LogoutRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail="An error occurred during logout. Please try again later.")
 
+
+@router.get("/generate_video_id", tags=["Generate Video ID"])
+def generate_video_id(length: int = 11) -> str:
+    characters = string.ascii_letters + string.digits
+    while True:
+        video_id = ''.join(random.choices(characters, k=length))
+        return video_id

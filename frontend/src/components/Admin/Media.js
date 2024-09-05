@@ -63,7 +63,6 @@ const Media = () => {
                   <img src={media.banner_url} alt={'Media Banner'} className="media-banner"/>
                   <div className="media-details">
                     <h3>{media.folder_name}</h3>
-                   
                   </div>
                 </div>
               ))}
