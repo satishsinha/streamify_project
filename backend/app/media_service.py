@@ -1,11 +1,12 @@
 import os
 import requests
-from bson import ObjectId
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from pymongo import MongoClient
+from app.utils import generate_video_id
 from app.database import get_mongo_client, MONGO_DB, MEDIA_COLLECTION
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends, status
-from app.utils import generate_video_id
+
 
 load_dotenv()
 
@@ -18,9 +19,10 @@ transcode_endpoint = f"{TRANSCODE_URL}/transcode/"
 
 # Generate unique video id
 @router.get("/get_unique_video_id", tags=["Media Services"])
-async def get_unique_video_id() -> str:
-    db = get_mongo_client[MONGO_DB]
-    media_collection = db[MEDIA_COLLECTION]
+async def get_unique_video_id(mongo_client: MongoClient = Depends(get_mongo_client)) -> str:
+
+    media_collection = mongo_client[MONGO_DB][MEDIA_COLLECTION]
+
     while True:
         # Generate a random video ID
         video_id = generate_video_id()
@@ -34,7 +36,8 @@ async def get_unique_video_id() -> str:
 async def upload_media(
         folder_name: str = Form(...),
         banner_file: UploadFile = File(...),
-        video_file: UploadFile = File(...), mongo_client=Depends(get_mongo_client)
+        video_file: UploadFile = File(...),
+        mongo_client=Depends(get_mongo_client)
 ):
     try:
         # Read files in binary mode
