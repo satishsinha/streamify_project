@@ -77,7 +77,7 @@ const Process = () => {
       }
 
       const result = await response.json();
-      setUploadStatus(`Update Successful: ${JSON.stringify(result)}`);
+      setUploadStatus(`Upload Successful: ${JSON.stringify(result)}`);
       setModalIsOpen(true); // Open the modal on successful upload
     } catch (error) {
       console.error('Error updating video information:', error);
@@ -87,12 +87,16 @@ const Process = () => {
     }
   };
 
+ 
   const closeModal = () => {
-    setModalIsOpen(false);
-    if (uploadStatus.startsWith('Upload Successful')) {
-      navigate('/media');
-    }
-  };
+  console.log("Closing modal with status:", uploadStatus); // Log the current status
+  setModalIsOpen(false);
+  
+  if (uploadStatus.startsWith('Upload Successful')) {
+    navigate('/media');
+  }
+};
+
 
   if (!videoInfo) {
     return <div>Loading video information...</div>;
