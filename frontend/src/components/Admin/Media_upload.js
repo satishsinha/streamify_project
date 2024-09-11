@@ -19,6 +19,12 @@ const Upload = () => {
     }
   }, []);
 
+  const [banner, setBanner] = useState(null);
+
+  const handleBannerChange = (e) => {
+    setBanner(e.target.files[0]);
+  };
+
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -64,6 +70,10 @@ const Upload = () => {
                 <option value="drama">Drama</option>
                 <option value="scifi">Sci-Fi</option>
               </select>
+            </div>
+            <div className="upload__input-group">
+              <label htmlFor="file">Banner</label>
+              <input type="file" id="banner" name="banner" onChange={handleBannerChange} required />
             </div>
             <div className="upload__input-group">
               <label htmlFor="file">File</label>
