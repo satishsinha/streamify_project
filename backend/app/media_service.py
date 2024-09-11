@@ -1,5 +1,6 @@
 import os
 import requests
+from typing import Optional
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from pymongo import MongoClient
@@ -37,6 +38,11 @@ async def upload_media(
         folder_name: str = Form(...),
         banner_file: UploadFile = File(...),
         video_file: UploadFile = File(...),
+        title: str = Form(...),
+        description: str = Form(...),
+        genre: str = Form(...),
+        trending: Optional[bool] = Form(None),
+        new: Optional[bool] = Form(None),
         mongo_client=Depends(get_mongo_client)
 ):
     try:
@@ -51,7 +57,14 @@ async def upload_media(
         }
 
         params = {"folder_name": folder_name}
-        response = requests.post(upload_endpoint, files=files, params=params)
+        data = {
+            "title": title,
+            "description": description,
+            "genre": genre,
+            "trending": trending,
+            "new": new
+        }
+        response = requests.post(upload_endpoint, files=files, data=data, params=params)
 
         response.raise_for_status()  # Raise exception for non-200 status codes
         # If the upload was successful, save the response to MongoDB
@@ -66,7 +79,12 @@ async def upload_media(
                 "banner_s3_path": response_data.get("banner_s3_path"),
                 "video_s3_path": response_data.get("video_s3_path"),
                 "banner_uploaded_file_name": response_data.get("banner_uploaded_file_name"),
-                "video_uploaded_file_name": response_data.get("video_uploaded_file_name")
+                "video_uploaded_file_name": response_data.get("video_uploaded_file_name"),
+                "title": title,
+                "description": description,
+                "genre": genre,
+                "trending": trending,
+                "new": new
             }
 
             result = media_collection.insert_one(media_data)  # Insert the data into MongoDB
