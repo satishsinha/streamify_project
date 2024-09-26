@@ -108,6 +108,7 @@ If you want to contribute to Streamify, feel free to open an issue or submit a p
 
 - **Satish Sinha** - [GitHub Profile](https://github.com/satishsinha)
 - **Kunal Paul** - [GitHub Profile](https://github.com/kunal-paul04)
+- **Abhay Manchanda** - [GitHub Profile](https://github.com/abhay1307)
 
 ## License
 
